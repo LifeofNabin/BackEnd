@@ -1,0 +1,36 @@
+// Middleware function where next() is called to pass control
+const express = require('express');
+const app = express();
+
+// Middleware function 1
+app.use((req, res, next) => {
+  console.log('Middleware 1');
+  next(); // Passes control to the next middleware function
+});
+
+// Middleware function 2
+app.use((req, res, next) => {
+  console.log('Middleware 2');
+  next(); // Passes control to the next middleware function
+});
+
+// Route handler
+app.get('/', (req, res) => {
+  res.send('Hello from the route handler!');
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+// If you don't use next(), the request will hang and no response will be sent
+app.use((req, res, next) => {
+  console.log('Middleware 1');
+  // No next() call here, so the request will not proceed to the next middleware
+  // The client will never receive a response, causing the request to hang
+});
+
+app.use((req, res, next) => {
+  console.log('Middleware 2');
+  res.send('Hello from Middleware 2');
+});
